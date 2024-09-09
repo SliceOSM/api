@@ -1,0 +1,11 @@
+[Unit]
+Description=osmx-web
+After=network-online.target
+
+[Service]
+ExecStart=/home/osmx/main -filesDir=/mnt/www/files -tmpDir=/mnt/tmp -exec=/home/osmx/OSMExpress/osmx -data=/mnt/planet.osmx
+Restart=always
+User=osmx
+
+[Install]
+WantedBy=multi-user.target
