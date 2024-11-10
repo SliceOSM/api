@@ -73,9 +73,10 @@ Cross-compile the `sliceosm-api` ARM linux binary:
 GOOS=linux GOARCH=arm64 go build
 ```
 
-Example crontab for updating an osmx database:
+Example crontab for updating an osmx database and cleaning up results older than one day:
 
 ```
 PATH=/home/osmx/OSMExpress:$PATH
 * * * * * /bin/sleep 8 && /usr/bin/python3 /home/osmx/OSMExpress/utils/osmx-update /mnt/planet.osmx https://planet.openstreetmap.org/replication/minute/ >> /home/osmx/osmx-update.log 2>&1
+0 0 * * * find /mnt/www/files/ -type f -mtime +1 -exec rm {} \;
 ```
