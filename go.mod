@@ -1,6 +1,6 @@
-module protomaps.com/osmx-web
+module openstreetmap.us/sliceosm-api
 
-go 1.21.5
+go 1.23.0
 
 require (
 	github.com/getsentry/sentry-go v0.28.1

@@ -1,4 +1,4 @@
-# osmx-web
+# sliceosm-api
 
 A lightweight web server for submitting jobs to an OSM Express database.
 
@@ -10,6 +10,7 @@ Returns:
 
 - the last updated timestamp
 - the nodes limit for the server
+- the number of jobs in the queue
 
 GET `/nodes.png`
 
@@ -66,6 +67,15 @@ GET `/{uuid}.osm.pbf` - download the file. This appears once the API reports `Co
 
 ##
 
+Cross-compile the `sliceosm-api` ARM linux binary:
+
 ```
-GOOS=linux GOARCH=arm64 go build main.go
+GOOS=linux GOARCH=arm64 go build
+```
+
+Example crontab for updating an osmx database:
+
+```
+PATH=/home/osmx/OSMExpress:$PATH
+* * * * * /bin/sleep 8 && /usr/bin/python3 /home/osmx/OSMExpress/utils/osmx-update /mnt/planet.osmx https://planet.openstreetmap.org/replication/minute/ >> /home/osmx/osmx-update.log 2>&1
 ```
