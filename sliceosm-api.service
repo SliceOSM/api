@@ -3,7 +3,8 @@ Description=sliceosm-api
 After=network-online.target
 
 [Service]
-ExecStart=/home/osmx/sliceosm-api -filesDir=/mnt/www/files -tmpDir=/mnt/tmp -exec=/home/osmx/OSMExpress/osmx -data=/mnt/planet.osmx
+ExecStart=/home/osmx/sliceosm-api -filesDir=/mnt/www/files -exec=/home/osmx/OSMExpress/osmx /mnt/planet.osmx
+Environment="TMPDIR=/mnt/tmp"
 Restart=always
 User=osmx
 

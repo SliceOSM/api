@@ -2,6 +2,24 @@
 
 A lightweight web server for submitting jobs to an OSM Express database.
 
+## Usage
+
+```
+Usage: ./sliceosm-api [OPTIONS] OSMX_FILE
+
+Options:
+  -bind string
+        IP address and port to listen on
+  -exec string
+        Path to OSMX executable
+  -filesDir string
+        Result directory
+  -nodesLimit int
+        Nodes limit (default 100000000)
+  -sentryDsn string
+        Sentry DSN
+```
+
 ## API
 
 GET `/`

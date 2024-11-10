@@ -362,33 +362,50 @@ func (h *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	var (
-		filesDir, tmpDir, exec, data, sentryDsn string
+		bindAddress, filesDir, exec, sentryDsn string
 	)
 	var nodesLimit int
+	flag.StringVar(&bindAddress, "bind", "", "IP address and port to listen on")
 	flag.StringVar(&filesDir, "filesDir", "", "Result directory")
-	flag.StringVar(&tmpDir, "tmpDir", "", "Temporary directory")
-	flag.StringVar(&exec, "exec", "", "OSMX executable")
-	flag.StringVar(&data, "data", "", "OSMX database")
+	flag.StringVar(&exec, "exec", "", "Path to OSMX executable")
 	flag.StringVar(&sentryDsn, "sentryDsn", "", "Sentry DSN")
 	flag.IntVar(&nodesLimit, "nodesLimit", 100000000, "Nodes limit")
+
+	flag.Usage = func() {
+		fmt.Printf("SliceOSM API server\n\n")
+		fmt.Printf("Usage: %s [OPTIONS] OSMX_FILE\n\n", os.Args[0])
+		fmt.Println("Options:")
+		flag.PrintDefaults()
+	}
+
 	flag.Parse()
 
 	if filesDir == "" {
-		fmt.Println("-filesDir required")
-		os.Exit(1)
+		fmt.Println("Error: missing required option -filesDir")
+		flag.Usage()
+		os.Exit(2)
 	}
+
+	tmpDir := os.Getenv("TMPDIR")
 	if tmpDir == "" {
-		fmt.Println("-tmpDir required")
-		os.Exit(1)
+		tmpDir = "/tmp"
 	}
+
 	if exec == "" {
-		fmt.Println("-exec required")
-		os.Exit(1)
+		exec = "osmx"
 	}
-	if data == "" {
-		fmt.Println("-data required")
-		os.Exit(1)
+
+	if bindAddress == "" {
+		bindAddress = ":8080"
 	}
+
+	if flag.NArg() != 1 {
+		fmt.Println("Error: missing required argument OSMX_FILE")
+		flag.Usage()
+		os.Exit(2)
+	}
+
+	data := flag.Arg(0)
 
 	if sentryDsn != "" {
 		err := sentry.Init(sentry.ClientOptions{
@@ -415,7 +432,7 @@ func main() {
 		nodesLimit: nodesLimit,
 	}
 	srv.StartWorkers()
-	fmt.Println("Starting server...")
+	fmt.Printf("Starting server on %s\n", bindAddress)
 	http.Handle("/", &srv)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(bindAddress, nil))
 }
