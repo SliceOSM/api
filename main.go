@@ -365,9 +365,9 @@ func main() {
 		bindAddress, filesDir, exec, sentryDsn string
 	)
 	var nodesLimit int
-	flag.StringVar(&bindAddress, "bind", "", "IP address and port to listen on")
+	flag.StringVar(&bindAddress, "bind", ":8080", "IP address and port to listen on")
 	flag.StringVar(&filesDir, "filesDir", "", "Result directory")
-	flag.StringVar(&exec, "exec", "", "Path to OSMX executable")
+	flag.StringVar(&exec, "exec", "osmx", "Path to OSMX executable")
 	flag.StringVar(&sentryDsn, "sentryDsn", "", "Sentry DSN")
 	flag.IntVar(&nodesLimit, "nodesLimit", 100000000, "Nodes limit")
 
@@ -389,14 +389,6 @@ func main() {
 	tmpDir := os.Getenv("TMPDIR")
 	if tmpDir == "" {
 		tmpDir = "/tmp"
-	}
-
-	if exec == "" {
-		exec = "osmx"
-	}
-
-	if bindAddress == "" {
-		bindAddress = ":8080"
 	}
 
 	if flag.NArg() != 1 {
