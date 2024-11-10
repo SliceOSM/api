@@ -8,6 +8,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/getsentry/sentry-go"
+	sentryhttp "github.com/getsentry/sentry-go/http"
 	"github.com/google/uuid"
 	"github.com/paulmach/orb"
 	"github.com/paulmach/orb/geojson"
@@ -425,6 +426,7 @@ func main() {
 	}
 	srv.StartWorkers()
 	fmt.Printf("Starting server on %s\n", bindAddress)
-	http.Handle("/", &srv)
+	sentryHandler := sentryhttp.New(sentryhttp.Options{})
+	http.Handle("/", sentryHandler.Handle(&srv))
 	log.Fatal(http.ListenAndServe(bindAddress, nil))
 }
