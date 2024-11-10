@@ -333,6 +333,7 @@ func (h *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			parts := strings.Split(r.URL.Path, "/")
 			if len(parts) != 3 || parts[0] != "" || parts[1] != "api" {
 				w.WriteHeader(404)
+				return
 			}
 			uuid := parts[2]
 
