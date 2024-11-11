@@ -76,9 +76,13 @@ Get a JSON Progress for a task submitted in the last 24 hours.
 }
 ```
 
-### GET /{uuid}_region.json
+## File Server
 
-get the GeoJSON submitted for this task.
+These paths are not served through the API, but by a static fileserver.
+
+### GET `/{uuid}_region.json`
+
+Get the GeoJSON submitted for this task. Valid immediately after the task is accepted by the server.
 
 ```json
 {
@@ -89,9 +93,9 @@ get the GeoJSON submitted for this task.
 }
 ```
 
-### GET /{uuid}.osm.pbf
+### GET `/{uuid}.osm.pbf`
 
-download the file. This appears once the API reports `Completed`.
+Download the result `osm.pbf`. This appears once the Get `/{uuid}` API reports `Completed`.
 
 ## Building
 
