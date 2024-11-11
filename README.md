@@ -1,6 +1,6 @@
 # sliceosm-api
 
-A lightweight web server for submitting jobs to an OSM Express database.
+A lightweight web server for submitting extract tasks to an OSM Express database.
 
 ## Usage
 
@@ -22,7 +22,7 @@ Options:
 
 ## API
 
-GET `/`
+### GET `/`
 
 Returns:
 
@@ -30,18 +30,21 @@ Returns:
 - the nodes limit for the server
 - the number of jobs in the queue
 
-GET `/nodes.png`
+### GET `/nodes.png`
 
-POST `/`
+Returns an PNG-encoded representation of OSM node density.
 
-Examples of creating jobs: (your `.osmx` database must include Richmond, Virginia)
+### POST `/`
+
+Create a task.
+
+Examples of creating tasks: (your `.osmx` database must include Richmond, Virginia)
 
 ```
 curl -X POST http://localhost:8080 -d '{"Name":"none", "RegionType":"bbox", "RegionData":[37.5272,-77.4571,37.5530,-77.4133]}'
 
 curl -X POST http://localhost:8080 -d '{"Name":"none","RegionType":"geojson","RegionData":{"type":"Polygon","coordinates":[[[-77.4571,37.5530],[-77.4571,37.5272],[-77.4133,37.5272],[-77.4133,37.5530],[-77.4571,37.5530]]]}}'
 ```
-
 
 - `RegionType` - one of `bbox`, `geojson`
 
@@ -52,13 +55,11 @@ curl -X POST http://localhost:8080 -d '{"Name":"none","RegionType":"geojson","Re
 * up to the configured nodes limit of the server.
 * Limit on the number of vertices in the input polygon.
 
-Returns a UUID.
+Returns a UUID or an error message.
 
-Returns an error message
+### GET `/{uuid}`
 
-GET `/{uuid}` : get a JSON API response for a task submitted in the last 24 hours.
-
-Returns a Progress object:
+Get a JSON Progress for a task submitted in the last 24 hours.
 
 ```js
 {
@@ -75,9 +76,9 @@ Returns a Progress object:
 }
 ```
 
-## File Server
+### GET /{uuid}_region.json
 
-GET `/{uuid}_region.json` - get the GeoJSON submitted for this task.
+get the GeoJSON submitted for this task.
 
 ```json
 {
@@ -88,9 +89,11 @@ GET `/{uuid}_region.json` - get the GeoJSON submitted for this task.
 }
 ```
 
-GET `/{uuid}.osm.pbf` - download the file. This appears once the API reports `Completed`.
+### GET /{uuid}.osm.pbf
 
-##
+download the file. This appears once the API reports `Completed`.
+
+## Building
 
 Cross-compile the `sliceosm-api` ARM linux binary:
 
