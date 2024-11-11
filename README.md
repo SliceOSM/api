@@ -1,6 +1,6 @@
 # sliceosm-api
 
-A lightweight web server for submitting extract tasks to an OSM Express database.
+A lightweight web server for submitting extract tasks to an [OSM Express](http://github.com/bdon/OSMExpress) database.
 
 ## Usage
 
