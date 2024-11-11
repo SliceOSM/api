@@ -34,11 +34,18 @@ GET `/nodes.png`
 
 POST `/`
 
-API endpoint for submitting jobs.
+Examples of creating jobs: (your `.osmx` database must include Richmond, Virginia)
+
+```
+curl -X POST http://localhost:8080 -d '{"Name":"none", "RegionType":"bbox", "RegionData":[37.5272,-77.4571,37.5530,-77.4133]}'
+
+curl -X POST http://localhost:8080 -d '{"Name":"none","RegionType":"geojson","RegionData":{"type":"Polygon","coordinates":[[[-77.4571,37.5530],[-77.4571,37.5272],[-77.4133,37.5272],[-77.4133,37.5530],[-77.4571,37.5530]]]}}'
+```
+
 
 - `RegionType` - one of `bbox`, `geojson`
 
-`bbox`: 
+`bbox`: in `min_lat,min_lon,max_lat,max_lon` format
 
 `geojson`: a GeoJSON Geometry, either a Polygon or MultiPolygon 
 
